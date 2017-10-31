@@ -19,7 +19,7 @@ int main(){
   int n_players = 4, i;
   deck_t mazo;
   deck_iniciar(&mazo);
-  void* shmem = create_shared_memory(sizeof(mazo));
+  //void* shmem = create_shared_memory(sizeof(mazo));
 
   for(i=0;i<16;i+=2){
     pipe(pipes + i);

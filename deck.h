@@ -3,7 +3,7 @@
 #define DECK_EMPTY -1
 
 typedef struct deck_s{
-  card_t* cartas[DECK_SIZE];
+  card_t** cartas[DECK_SIZE];
   int posicion;
 }deck_t;
 

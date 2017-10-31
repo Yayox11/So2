@@ -11,4 +11,5 @@ void game_logic(int* pipes, int n_pipes,int i){
   if(i == 3){
     close(pipes[0]);
   }
+  printf("estoy en el proceso %d\n",i );
 }
