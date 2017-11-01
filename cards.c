@@ -39,6 +39,8 @@ char* mostrar_carta_tipo(card_t* c){
       return "Cambio de Sentido";
     case TIPO_NUMERO:
       return "Numero";
+    case TIPO_CAMBIO:
+      return "Cambio de Color";
   }
 }
 
@@ -55,5 +57,5 @@ void mostrar_valores(card_t* c){
     perror("Carta Nula\n");
     exit(EXIT_FAILURE);
   }
-  printf("Tipo: %s\nColor: %s\nNumero: %d",mostrar_carta_tipo(c), mostrar_carta_color(c),mostrar_carta_numero(c));
+  printf("Tipo: %s Color: %s Numero: %d\n",mostrar_carta_tipo(c), mostrar_carta_color(c),mostrar_carta_numero(c));
 }

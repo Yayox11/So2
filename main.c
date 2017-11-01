@@ -6,7 +6,7 @@
 #include <sys/mman.h>
 #include <sys/wait.h>
 #include "game.c"
-#include "deck.c"
+
 
 void* create_shared_memory(size_t size) {
   int protection = PROT_READ | PROT_WRITE;
@@ -16,10 +16,11 @@ void* create_shared_memory(size_t size) {
 
 int main(){
   int pipes[16];
-  int n_players = 4, i;
+  int n_players = 4, i, turno = 1;
   deck_t mazo;
   deck_iniciar(&mazo);
-  //void* shmem = create_shared_memory(sizeof(mazo));
+  deck_t* shmem = create_shared_memory(sizeof(mazo));
+  memcpy(shmem,&mazo,sizeof(mazo));
 
   for(i=0;i<16;i+=2){
     pipe(pipes + i);
@@ -28,12 +29,17 @@ int main(){
   while(i < n_players - 1){
     int pid = fork();
     if(pid == 0){
-      game_logic(pipes,16,i);
+      close(pipes[5]);
+      close(pipes[8]);
+      close(pipes[12]);
+      game_logic(pipes,16,i,shmem,&turno);
       exit(0);
     }
     ++i;
   }
-  game_logic(pipes,16,3);
+  close(pipes[0]);
+  close(pipes[3]);
+  game_logic(pipes,16,3,shmem,&turno);
   pid_t pid2;
   int status;
   while ((pid2=wait(&status)) > 0);

@@ -25,7 +25,7 @@ void shuffle(int *array, int n) {
    }
 }
 
-static const card_t mazo_base[108] = {
+static card_t mazo_base[108] = {
              {TIPO_NUMERO,COLOR_AZUL,1},
              {TIPO_NUMERO,COLOR_AZUL,1},
              {TIPO_NUMERO,COLOR_ROJO,1},
@@ -141,21 +141,21 @@ card_t* deck_siguiente(deck_t* d){
     perror("Mazo Vacio\n");
     exit(EXIT_FAILURE);
   }
-  return *d->cartas[d->posicion--];
+  return d->cartas[d->posicion--];
 }
 
 void deck_iniciar(deck_t* d){
-  printf("entro");
   int shuffle_index[108],i;
   for(i=0;i<108;i++){
     shuffle_index[i] = i;
   }
   shuffle(shuffle_index,108);
   for(i=0;i<108;i++){
-    printf("entro en el for en la pos %d",i);
     int c = shuffle_index[i];
-    **d->cartas[i]=mazo_base[c];
+    d->cartas[i]=&mazo_base[c];
   }
+  d->posicion = 107;
+  d->sentido = 1;
 
 }
 
@@ -164,7 +164,7 @@ card_t* deck_mostrar(deck_t* d){
     perror("Mazo Vacio\n");
     exit(EXIT_FAILURE);
   }
-  return *d->cartas[d->posicion];
+  return d->cartas[d->posicion];
 }
 
 void deck_meter(deck_t* d, card_t* c){
@@ -180,5 +180,21 @@ void deck_meter(deck_t* d, card_t* c){
     perror("Mazo Vacio\n");
     exit(EXIT_FAILURE);
   }
-  d->cartas[++d->posicion] = &c;
+  d->cartas[++d->posicion] = c;
+}
+
+void mostrar_mano(deck_t* d){
+  int i;
+  for(i = 0;i<d->cantidad;i++){
+    printf("Carta %d ",i+1);
+    mostrar_valores(d->cartas[i]);
+  }
+}
+
+void reallocar_mano(deck_t* d,int index){
+  int i;
+  for(i=index;i<d->cantidad;i++){
+    d->cartas[index] = d->cartas[index+1];
+  }
+  d->cantidad--;
 }
